@@ -13,10 +13,14 @@ import androidx.compose.ui.unit.dp
 import com.pnc.miles.jetpackcomposedemos.ui.theme.JetpackComposeDemosTheme
 
 @Composable
-fun ArtistCard(artist: Artist) {
+fun ArtistCard(
+    artist: Artist,
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        onClick = onClick
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(
@@ -44,7 +48,8 @@ fun ArtistCardPreview() {
 
     JetpackComposeDemosTheme {
         ArtistCard(
-            artist = artist
+            artist = artist,
+            onClick = {}
         )
     }
 }
