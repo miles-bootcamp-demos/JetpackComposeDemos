@@ -1,0 +1,34 @@
+package com.pnc.miles.jetpackcomposedemos.features.boardmembers.presentation
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.pnc.miles.jetpackcomposedemos.features.boardmembers.domain.BoardMember
+
+@Composable
+fun BoardMemberCard(
+    member: BoardMember,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        onClick = onClick
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "${member.firstName} ${member.lastName}",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text("Title: ${member.title}")
+            Text("Gender: ${member.gender}")
+        }
+    }
+}

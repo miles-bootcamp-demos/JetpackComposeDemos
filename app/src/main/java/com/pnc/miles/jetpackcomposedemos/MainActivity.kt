@@ -1,29 +1,31 @@
 package com.pnc.miles.jetpackcomposedemos
 
+import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pnc.miles.jetpackcomposedemos.ui.theme.JetpackComposeDemosTheme
+import com.pnc.miles.jetpackcomposedemos.core.EventPlannerApp
+import com.pnc.miles.jetpackcomposedemos.ui.theme.KazooTheme
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
+class EventPlannerApplication: Application()
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            JetpackComposeDemosTheme {
+            KazooTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
                     val modifier = Modifier
@@ -34,34 +36,11 @@ class MainActivity : ComponentActivity() {
                     Box(
                         modifier = modifier
                     ) {
-                        EventPlanningDashboard()
+                        EventPlannerApp()
+                        // AccountApp()
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = "Hello $name!",
-            color = Color.Blue
-        )
-        Text(
-            text = "Welcome to PNC Bank"
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    JetpackComposeDemosTheme {
-        Greeting("Android")
     }
 }
