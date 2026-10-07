@@ -23,6 +23,7 @@ import com.pnc.miles.jetpackcomposedemos.features.boardmembers.domain.BoardMembe
 import com.pnc.miles.jetpackcomposedemos.features.boardmembers.presentation.BoardMemberDetails
 import com.pnc.miles.jetpackcomposedemos.features.boardmembers.presentation.BoardMemberList
 import com.pnc.miles.jetpackcomposedemos.features.orders.presentation.OrdersScreen
+import com.pnc.miles.jetpackcomposedemos.features.todo.presentation.ToDosScreen
 import com.pnc.miles.jetpackcomposedemos.legacy.LegacyArtistList
 
 @Composable
@@ -63,6 +64,9 @@ fun EventPlannerApp(
                         },
                         onViewOrders = {
                             navController.navigate(OrdersRoute)
+                        },
+                        onViewToDos = {
+                            navController.navigate(ToDosRoute)
                         }
 //                        onLegacyArtists = {
 //                            navController.navigate(LegacyArtistListRoute)
@@ -117,6 +121,10 @@ fun EventPlannerApp(
 
                 composable<OrdersRoute> {
                     OrdersScreen(useTwoPaneLayout = useTwoPaneLayout)
+                }
+
+                composable<ToDosRoute> {
+                    ToDosScreen()
                 }
 
 //                composable<LegacyArtistListRoute> {

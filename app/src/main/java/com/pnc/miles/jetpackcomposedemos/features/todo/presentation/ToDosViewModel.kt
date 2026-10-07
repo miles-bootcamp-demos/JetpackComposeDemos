@@ -1,0 +1,40 @@
+package com.pnc.miles.jetpackcomposedemos.features.todo.presentation
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.pnc.miles.jetpackcomposedemos.core.LoadableState
+import com.pnc.miles.jetpackcomposedemos.features.todo.domain.CreateToDoUseCase
+import com.pnc.miles.jetpackcomposedemos.features.todo.domain.GetToDosUseCase
+import com.pnc.miles.jetpackcomposedemos.features.todo.domain.ToDo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ToDosViewModel @Inject constructor(
+    private val getToDos: GetToDosUseCase,
+    private val createToDo: CreateToDoUseCase
+): ViewModel() {
+    private val _uiState: MutableStateFlow<LoadableState<List<ToDo>>> =
+        MutableStateFlow(LoadableState.Loading)
+
+    val uiState: StateFlow<LoadableState<List<ToDo>>> = _uiState.asStateFlow()
+
+    fun loadToDos() {
+        viewModelScope.launch {
+            _uiState.value = LoadableState.Success(getToDos())
+        }
+    }
+
+    fun createToDo(title: String) {
+        if (title.isNotEmpty()) {
+            viewModelScope.launch {
+                createToDo(ToDo(0, title, false))
+                loadToDos()
+            }
+        }
+    }
+}
