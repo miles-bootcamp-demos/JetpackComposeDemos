@@ -1,10 +1,12 @@
 package com.pnc.miles.jetpackcomposedemos.features.todo.presentation
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material.icons.filled.Add
@@ -20,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pnc.miles.jetpackcomposedemos.features.todo.domain.ToDo
@@ -29,7 +32,9 @@ import com.pnc.miles.jetpackcomposedemos.features.todo.domain.ToDo
 @Composable
 fun ToDosList(
     toDos: List<ToDo>,
-    onAdd: (String) -> Unit
+    useTwoPaneLayout: Boolean,
+    onAdd: (String) -> Unit,
+    onToggleCompleted: (ToDo) -> Unit
 ) {
 //    // Doesn't remember that counter was incremented:
 //    var counter = 0
@@ -56,15 +61,20 @@ fun ToDosList(
             }
         }
     ) {
-        LazyColumn(
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(if (useTwoPaneLayout) 2 else 1),
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(vertical = 8.dp)
+            contentPadding = PaddingValues(16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(
-                items = toDos,
-                key = { toDo: ToDo -> toDo.id }
-            ) { toDo: ToDo ->
-                Text(toDo.title)
+            items(toDos) { toDo: ToDo ->
+                ToDoCard(
+                    todo = toDo,
+                    onDoubleTap = {
+                        onToggleCompleted()
+                    }
+                )
             }
         }
 
@@ -76,6 +86,7 @@ fun ToDosList(
             ) {
                 TextField(
                     value = newText,
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
                     onValueChange = { newText = it },
                     label = { Text("New to-do") }
                 )
@@ -84,7 +95,8 @@ fun ToDosList(
                         onAdd(newText)
                         showDrawer = false
                         newText = ""
-                    }
+                    },
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
                     Text("Add")
                 }

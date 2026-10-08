@@ -12,6 +12,7 @@ import com.pnc.miles.jetpackcomposedemos.core.LoadableState
 
 @Composable
 fun ToDosScreen(
+    useTwoPaneLayout: Boolean,
     viewModel: ToDosViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -37,8 +38,12 @@ fun ToDosScreen(
             val toDos = (uiState as LoadableState.Success).data
             ToDosList(
                 toDos = toDos,
+                useTwoPaneLayout = useTwoPaneLayout,
                 onAdd = { item: String ->
                     viewModel.createToDo(item)
+                },
+                onToggleCompleted = {
+                    viewModel.toggleCompleted(it)
                 }
             )
         }

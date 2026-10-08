@@ -124,7 +124,7 @@ fun EventPlannerApp(
                 }
 
                 composable<ToDosRoute> {
-                    ToDosScreen()
+                    ToDosScreen(useTwoPaneLayout = useTwoPaneLayout)
                 }
 
 //                composable<LegacyArtistListRoute> {
