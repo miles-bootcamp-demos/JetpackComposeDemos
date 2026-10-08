@@ -72,7 +72,7 @@ fun ToDosList(
                 ToDoCard(
                     todo = toDo,
                     onDoubleTap = {
-                        onToggleCompleted()
+                        onToggleCompleted(toDo)
                     }
                 )
             }
