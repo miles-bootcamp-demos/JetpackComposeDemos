@@ -3,6 +3,7 @@ package com.pnc.miles.jetpackcomposedemos.core
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.ArtistDataSource
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.DefaultArtistRepository
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.HardCodedArtistDataSource
+import com.pnc.miles.jetpackcomposedemos.features.artists.data.OfflineFirstArtistRepository
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.RandomArtistDataSource
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.ArtistRepository
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.DefaultOrderRepository
@@ -30,7 +31,7 @@ annotation class ApplicationScope
 abstract class AppInjectionModule {
     @Binds
     abstract fun bindArtistRepository(
-        implementation: DefaultArtistRepository
+        implementation: OfflineFirstArtistRepository
     ): ArtistRepository
 
     @Binds

@@ -10,5 +10,5 @@ interface RemoteArtistDataSource: ArtistDataSource {
     @GET("talent/{id}")
     override suspend fun getArtist(
         @Path("id") id: Int
-    ): ArtistDto?
+    ): ArtistDto
 }

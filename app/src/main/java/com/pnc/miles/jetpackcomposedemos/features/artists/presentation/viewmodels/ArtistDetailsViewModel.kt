@@ -5,16 +5,21 @@ import androidx.lifecycle.viewModelScope
 import com.pnc.miles.jetpackcomposedemos.core.LoadableState
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.Artist
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.GetArtistUseCase
+import com.pnc.miles.jetpackcomposedemos.features.artists.domain.RefreshArtistUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ArtistDetailsViewModel @Inject constructor(
-    private val getArtist: GetArtistUseCase
+    private val getArtist: GetArtistUseCase,
+    private val refreshArtist: RefreshArtistUseCase
 ): ViewModel() {
     private val _uiState: MutableStateFlow<LoadableState<Artist>> = MutableStateFlow(
         LoadableState.Loading
@@ -22,14 +27,47 @@ class ArtistDetailsViewModel @Inject constructor(
 
     val uiState: StateFlow<LoadableState<Artist>> = _uiState.asStateFlow()
 
+    // A job is a cancellable thing with a lifecycle that concludes in its completion.
+    private var loadJob: Job? = null
+    private var loadedId: Int? = null
+
     fun loadArtist(id: Int) {
-        viewModelScope.launch {
-            val artist = getArtist(id)
-            if (artist == null) {
-                _uiState.value = LoadableState.Empty
+        // Don't need to restart (and flash loading) if this id is already being observed
+        if (id == loadedId && loadJob?.isActive == true) return
+
+        loadedId = id
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
+            _uiState.value = LoadableState.Loading
+            val hadCache = getArtist(id).first() != null
+
+            // refresh the artist data in the background
+            launch {
+                try {
+                    refreshArtist(id)
+                }
+                catch(e: CancellationException) {
+                    throw e
+                }
+                catch(e: Exception) {
+                    // with a cached copy on screen, a failed refresh is silent
+                    if (!hadCache) {
+                        _uiState.value = LoadableState.Error(
+                            e.message ?: "Couldn't load artist"
+                        )
+                    }
+                }
             }
-            else {
-                _uiState.value = LoadableState.Success(artist)
+
+            // establish our subscription
+            getArtist(id).collect { artist ->
+                when {
+                    artist != null -> _uiState.value = LoadableState.Success(artist)
+                    // temporary state while the refresh is still underway
+                    hadCache -> _uiState.value = LoadableState.Empty
+                    // no other useful cases - stay in the loading state
+                    // until the refresh either writes to the db or fails
+                }
             }
         }
     }

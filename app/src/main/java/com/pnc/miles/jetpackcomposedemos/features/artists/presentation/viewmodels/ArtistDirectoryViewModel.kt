@@ -4,18 +4,22 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.Artist
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.GetAvailableArtistsUseCase
+import com.pnc.miles.jetpackcomposedemos.features.artists.domain.RefreshArtistsUseCase
 import com.pnc.miles.jetpackcomposedemos.features.artists.presentation.state.ArtistDirectoryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 @HiltViewModel
 class ArtistDirectoryViewModel @Inject constructor(
-    private val getAvailableArtists: GetAvailableArtistsUseCase
+    private val getAvailableArtists: GetAvailableArtistsUseCase,
+    private val refreshArtists: RefreshArtistsUseCase
 ): ViewModel() {
     // keep the actual mutable state value private
     private val _uiState = MutableStateFlow(
@@ -25,15 +29,69 @@ class ArtistDirectoryViewModel @Inject constructor(
     // expose (publicly) a read-only view of the state object
     val uiState: StateFlow<ArtistDirectoryState> = _uiState.asStateFlow()
 
+    init {
+        // establish a subscription to the observable collection
+        // of artists from our Room db
+        viewModelScope.launch {
+            // by subscribing (collecting) inside the viewModelScope
+            // the subscriptions will automatically be released and disposed
+            // when the viewModel is destroyed (i.e., when the user
+            // navigates away from this screen)
+            getAvailableArtists().collect { artists ->
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        artists = artists
+                    )
+                }
+            }
+        }
+    }
+
+    // loadArtists does not get the data for the view,
+    // instead it refreshes the local Room db
     fun loadArtists() {
         // call an async data loading method and we are not in an async method
+        if (_uiState.value.isRefreshing) return
+
         viewModelScope.launch {
-            val artists = getAvailableArtists()
             _uiState.update { currentState ->
                 currentState.copy(
-                    artists = artists
+                    isRefreshing = true,
+                    errorMessage = null
                 )
             }
+
+            try {
+                refreshArtists()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        isRefreshing = false
+                    )
+                }
+            }
+            catch (e: CancellationException) {
+                // NEVER swallow a CancellationException
+                // doing so can orphan the coroutines (suspendables)
+                throw e
+            }
+            catch (e: Exception) {
+                // cached artists already on screen, they can stay there
+                // we just need to surface the error
+                _uiState.update {
+                    it.copy(
+                        isRefreshing = false,
+                        errorMessage = e.message ?: "Couldn't refresh artists"
+                    )
+                }
+            }
+        }
+    }
+
+    fun dismissError() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                errorMessage = null
+            )
         }
     }
 
