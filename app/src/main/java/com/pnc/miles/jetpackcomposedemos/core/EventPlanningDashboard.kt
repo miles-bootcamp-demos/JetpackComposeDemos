@@ -10,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -28,16 +29,19 @@ fun EventPlanningDashboard(
     ) {
         Text(
             text = "Event Planning Operations",
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier.testTag("dashboard-title")
         )
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .testTag("view-artists-button"),
             onClick = onViewArtists
         ) {
             Text("View Available Artists")
         }
         Button(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth()
+                .testTag("view-board-button"),
             onClick = onViewBoardMembers
         ) {
             Text("View Board Members")
@@ -45,12 +49,14 @@ fun EventPlanningDashboard(
         Button(
             onClick = onViewOrders,
             modifier = Modifier.fillMaxWidth()
+                .testTag("view-orders-button")
         ) {
             Text("View Orders")
         }
         Button(
             onClick = onViewToDos,
             modifier = Modifier.fillMaxWidth()
+                .testTag("view-todo-button")
         ) {
             Text("View To-Dos")
         }

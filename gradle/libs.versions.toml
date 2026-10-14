@@ -59,6 +59,7 @@ room-compiler = { group = "androidx.room", name = "room-compiler", version.ref =
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.11.0" }
 turbine = { group = "app.cash.turbine", name = "turbine", version = "1.2.1" }
+espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "espressoCore" }
 
 [bundles]
 coil = [ "coil-compose", "coil-loader" ]

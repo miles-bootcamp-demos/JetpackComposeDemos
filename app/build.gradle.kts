@@ -83,4 +83,5 @@ dependencies {
     ksp(libs.room.compiler)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+    androidTestImplementation(libs.espresso.contrib)
 }
