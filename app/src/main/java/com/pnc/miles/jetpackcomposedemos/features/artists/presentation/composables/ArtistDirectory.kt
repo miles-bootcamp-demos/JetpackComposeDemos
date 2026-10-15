@@ -41,8 +41,8 @@ import com.pnc.miles.jetpackcomposedemos.features.artists.presentation.state.Art
 fun ArtistDirectory(
     state: ArtistDirectoryState,
     useTwoPaneLayout: Boolean,
-    onBack: () -> Unit,
-    onArtistSelected: (Int) -> Unit,
+    onBack: () -> Unit = {},
+    onArtistSelected: (Int) -> Unit = {},
     onGenreChange: (String) -> Unit = {},
     onLocationChange: (String) -> Unit = {},
     onShowFilterChange: (Boolean) -> Unit = {}

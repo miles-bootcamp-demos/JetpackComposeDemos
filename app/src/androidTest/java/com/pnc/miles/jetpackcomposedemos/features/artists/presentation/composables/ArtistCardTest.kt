@@ -61,4 +61,33 @@ class ArtistCardTest {
 
         assertEquals(1, clickCount)
     }
+
+    @Test
+    fun givenNotFavorite_whenStarTapped_thenBecomesFavorite() {
+        setCard()
+
+        composeRule.onNodeWithContentDescription("Not favorite", useUnmergedTree = true)
+            .performClick()
+
+        composeRule.onNodeWithContentDescription("Favorite", useUnmergedTree = true)
+            .assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Not favorite", useUnmergedTree = true)
+            .assertDoesNotExist()
+    }
+
+    @Test
+    fun givenFavorite_whenStarTappedAgain_thenReturnsToNotAFavorite() {
+        setCard()
+
+        composeRule.onNodeWithContentDescription("Not favorite", useUnmergedTree = true)
+            .performClick()
+
+        composeRule.onNodeWithContentDescription("Favorite", useUnmergedTree = true)
+            .performClick()
+
+        composeRule.onNodeWithContentDescription("Not favorite", useUnmergedTree = true)
+            .assertIsDisplayed()
+        composeRule.onNodeWithContentDescription("Favorite", useUnmergedTree = true)
+            .assertDoesNotExist()
+    }
 }
