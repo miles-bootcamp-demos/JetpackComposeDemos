@@ -30,6 +30,7 @@ android {
         buildConfigField("String", "AUTH_BASE_URL", "\"https://api.bootcampcentral.com/\"")
         buildConfigField("String", "OIDC_REDIRECT_URI", "\"com.pnc.jetpackcomposedemos:/oauth2redirect\"")
         buildConfigField("String", "OIDC_SCOPES", "\"openid profile offline_access orders.read\"")
+        buildConfigField("String", "OIDC_CLIENT_ID", "\"adventureworks-mobile\"")
     }
 
     buildTypes {
@@ -102,4 +103,5 @@ dependencies {
     androidTestImplementation(platform(libs.kotlinx.coroutines.bom))
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.androidx.junit.ktx)
+    implementation(libs.androidx.browser)
 }

@@ -20,6 +20,7 @@ retrofitVersion = "3.0.0"
 okhttpVersion = "5.5.0"
 roomVersion = "2.8.5"
 coroutinesVersion = "1.11.0"
+browser = "1.9.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +66,7 @@ hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testi
 room-testing = { group = "androidx.room", name = "room-testing", version.ref = "roomVersion" }
 kotlinx-coroutines-bom = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-bom", version.ref = "coroutinesVersion" }
 androidx-junit-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitVersion" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browser" }
 
 [bundles]
 coil = [ "coil-compose", "coil-loader" ]
