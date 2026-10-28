@@ -2,6 +2,8 @@ package com.pnc.miles.jetpackcomposedemos.testutil.fakes
 
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.ArtistDataSource
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.ArtistDto
+import com.pnc.miles.jetpackcomposedemos.features.orders.data.MyOrderResponseDto
+import com.pnc.miles.jetpackcomposedemos.features.orders.data.MyOrdersDataSource
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.OrderDataSource
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.OrderLineItemDto
 import com.pnc.miles.jetpackcomposedemos.testutil.builders.anArtistDto
@@ -41,5 +43,28 @@ class FakeOrderDataSource @Inject constructor(): OrderDataSource {
     override suspend fun getOrders(): List<OrderLineItemDto> {
         failure?.let { throw it }
         return lineItems
+    }
+}
+
+@Singleton
+class FakeMyOrdersDataSource @Inject constructor(): MyOrdersDataSource {
+    var response = MyOrderResponseDto(
+        customerId = 1,
+        page = 1,
+        pageSize = 100,
+        totalOrders = 0,
+        orders = emptyList()
+    )
+    var failure: Throwable? = null
+    var lastCustomerId: Int? = null
+
+    override suspend fun getOrders(
+        customerId: Int,
+        page: Int,
+        pageSize: Int
+    ): MyOrderResponseDto {
+        lastCustomerId = customerId
+        failure?.let { throw it }
+        return response
     }
 }

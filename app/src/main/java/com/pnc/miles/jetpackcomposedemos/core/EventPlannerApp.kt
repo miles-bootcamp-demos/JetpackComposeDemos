@@ -1,6 +1,7 @@
 package com.pnc.miles.jetpackcomposedemos.core
 
 import android.util.Log
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.currentWindowAdaptiveInfoV2
 import androidx.compose.runtime.Composable
@@ -44,6 +45,7 @@ fun EventPlannerApp(
     val boardMembers = BoardMember.getBoardMembers()
 
     when (authState) {
+        is AuthState.Restoring -> CircularProgressIndicator()
         is AuthState.Unauthenticated -> {
 //            LoginScreen(
 //                onLoginSuccess = { user ->
@@ -72,6 +74,9 @@ fun EventPlannerApp(
                         },
                         onViewToDos = {
                             navController.navigate(ToDosRoute)
+                        },
+                        onSignOut = {
+                            viewModel.logout()
                         }
 //                        onLegacyArtists = {
 //                            navController.navigate(LegacyArtistListRoute)

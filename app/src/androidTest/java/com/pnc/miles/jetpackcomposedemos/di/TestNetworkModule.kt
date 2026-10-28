@@ -2,8 +2,10 @@ package com.pnc.miles.jetpackcomposedemos.di
 
 import com.pnc.miles.jetpackcomposedemos.core.NetworkModule
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.ArtistDataSource
+import com.pnc.miles.jetpackcomposedemos.features.orders.data.MyOrdersDataSource
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.OrderDataSource
 import com.pnc.miles.jetpackcomposedemos.testutil.fakes.FakeArtistDataSource
+import com.pnc.miles.jetpackcomposedemos.testutil.fakes.FakeMyOrdersDataSource
 import com.pnc.miles.jetpackcomposedemos.testutil.fakes.FakeOrderDataSource
 import dagger.Binds
 import dagger.Module
@@ -21,4 +23,7 @@ abstract class TestNetworkModule {
 
     @Binds
     abstract fun bindOrderDataSource(fake: FakeOrderDataSource): OrderDataSource
+
+    @Binds
+    abstract fun bindMyOrdersDataSource(fake: FakeMyOrdersDataSource): MyOrdersDataSource
 }

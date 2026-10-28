@@ -3,7 +3,9 @@ package com.pnc.miles.jetpackcomposedemos.core
 import com.pnc.miles.jetpackcomposedemos.BuildConfig
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.ArtistDataSource
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.RemoteArtistDataSource
+import com.pnc.miles.jetpackcomposedemos.features.orders.data.MyOrdersDataSource
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.OrderDataSource
+import com.pnc.miles.jetpackcomposedemos.features.orders.data.RemoteMyOrdersDataSource
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.RemoteOrderDataSource
 import dagger.Module
 import dagger.Provides
@@ -22,17 +24,27 @@ import javax.inject.Singleton
 @Retention(AnnotationRetention.BINARY)
 annotation class AdventureWorks
 
+// @Module defines how to create dependencies that cannot be constructor-injected, while @InstallIn
+// dictates which Android component (and lifecycle) those dependencies belong to.
+// Together, they tell Hilt how to construct your objects and how long those objects should live
+// in memory.
 @Module
-@InstallIn(SingletonComponent::class)
+@InstallIn(SingletonComponent::class)       // App launch to close
 object NetworkModule {
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideOkHttpClient(
+        authInterceptor: AuthInterceptor,
+        tokenAuthenticator: TokenAuthenticator
+    ): OkHttpClient {
         return OkHttpClient.Builder()
+            .addInterceptor(authInterceptor)
+            .authenticator(tokenAuthenticator)
             .apply {
                 if (BuildConfig.DEBUG) {
                     addInterceptor(HttpLoggingInterceptor().apply {
                         level = HttpLoggingInterceptor.Level.BODY
+                        redactHeader("Authorization")
                     })
                 }
             }
@@ -81,6 +93,16 @@ object NetworkModule {
     ): OrderDataSource {
         return retrofit.create(
             RemoteOrderDataSource::class.java
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideMyOrderDataSource(
+        @AdventureWorks retrofit: Retrofit
+    ): MyOrdersDataSource {
+        return retrofit.create(
+            RemoteMyOrdersDataSource::class.java
         )
     }
 }

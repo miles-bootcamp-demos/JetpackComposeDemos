@@ -8,6 +8,7 @@ import com.pnc.miles.jetpackcomposedemos.features.artists.data.RandomArtistDataS
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.ArtistRepository
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.DefaultOrderRepository
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.LocalOnlyOrderRepository
+import com.pnc.miles.jetpackcomposedemos.features.orders.data.MyOrdersRepository
 import com.pnc.miles.jetpackcomposedemos.features.orders.domain.OrderRepository
 import com.pnc.miles.jetpackcomposedemos.features.todo.data.DefaultToDoRepository
 import com.pnc.miles.jetpackcomposedemos.features.todo.domain.ToDoRepository
@@ -36,7 +37,7 @@ abstract class AppInjectionModule {
 
     @Binds
     abstract fun bindOrdersRepository(
-        implementation: LocalOnlyOrderRepository
+        implementation: MyOrdersRepository
     ): OrderRepository
 
     @Binds
