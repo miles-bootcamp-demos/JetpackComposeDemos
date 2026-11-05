@@ -1,8 +1,11 @@
 package com.pnc.miles.jetpackcomposedemos.features.authentication.domain
 
 import android.se.omapi.Session
+import com.pnc.miles.jetpackcomposedemos.features.authentication.data.storage.FakeTokenStore
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import org.junit.Test
 
 class SessionManagerTest {
@@ -14,15 +17,21 @@ class SessionManagerTest {
 
     @Test
     fun `starts out unauthenticated`() {
-        val session = SessionManager()
+        val session = SessionManager(
+            FakeTokenStore(),
+            CoroutineScope(Dispatchers.Unconfined)
+        )
 
-        assertEquals(AuthState.Unauthenticated, session.state.value)
+        assertEquals(AuthState.Restoring, session.state.value)
         assertNull(session.currentUser)
     }
 
     @Test
     fun `signing in exposes the user`() {
-        val session = SessionManager()
+        val session = SessionManager(
+            FakeTokenStore(),
+            CoroutineScope(Dispatchers.Unconfined)
+        )
 
         session.signIn(user)
 
@@ -32,7 +41,10 @@ class SessionManagerTest {
 
     @Test
     fun `signing out clears the user`() {
-        val session = SessionManager()
+        val session = SessionManager(
+            FakeTokenStore(),
+            CoroutineScope(Dispatchers.Unconfined)
+        )
         session.signIn(user)
 
         session.signOut()

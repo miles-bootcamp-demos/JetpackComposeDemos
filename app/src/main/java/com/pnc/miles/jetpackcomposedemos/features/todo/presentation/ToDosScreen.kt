@@ -8,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.pnc.miles.jetpackcomposedemos.core.LoadableState
 
 @Composable
@@ -15,7 +16,7 @@ fun ToDosScreen(
     useTwoPaneLayout: Boolean,
     viewModel: ToDosViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     // LaunchedEffect renders what's in the body during initial composition
     // It monitors the parameter value for when to recompose
@@ -44,7 +45,10 @@ fun ToDosScreen(
                 },
                 onToggleCompleted = {
                     viewModel.toggleCompleted(it)
-                }
+                },
+                onDelete = viewModel::deleteToDo,
+                onUndoDelete = viewModel::restoreToDo,
+                onReorder = viewModel::reorder
             )
         }
     }

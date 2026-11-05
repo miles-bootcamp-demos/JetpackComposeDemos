@@ -1,9 +1,12 @@
 package com.pnc.miles.jetpackcomposedemos.features.orders.data
 
+import com.pnc.miles.jetpackcomposedemos.features.authentication.data.storage.FakeTokenStore
 import com.pnc.miles.jetpackcomposedemos.features.authentication.domain.SessionManager
 import com.pnc.miles.jetpackcomposedemos.features.authentication.domain.User
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
@@ -28,7 +31,10 @@ class MyOrdersRepositoryTest {
     }
 
     private val dataSource = RecordingDataSource()
-    private val session = SessionManager()
+    private val session = SessionManager(
+        FakeTokenStore(),
+        CoroutineScope(Dispatchers.Unconfined)
+    )
     private val repository = MyOrdersRepository(dataSource, session)
 
 

@@ -21,7 +21,7 @@ class AuthViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            
+            session.restore()
         }
     }
 

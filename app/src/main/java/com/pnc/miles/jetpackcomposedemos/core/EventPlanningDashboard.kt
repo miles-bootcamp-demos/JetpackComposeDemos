@@ -11,7 +11,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.pnc.miles.jetpackcomposedemos.R
 
 @Composable
 fun EventPlanningDashboard(
@@ -19,7 +21,8 @@ fun EventPlanningDashboard(
     onViewBoardMembers: () -> Unit,
     onViewOrders: () -> Unit,
     onViewToDos: () -> Unit,
-    onSignOut: () -> Unit
+    onSignOut: () -> Unit,
+    onSettings: () -> Unit
 //    onLegacyArtists: () -> Unit
 ) {
     Column(
@@ -29,44 +32,23 @@ fun EventPlanningDashboard(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Event Planning Operations",
+            text = stringResource(R.string.dashboard_title),
             style = MaterialTheme.typography.headlineMedium,
             modifier = Modifier.testTag("dashboard-title")
         )
         Button(
             modifier = Modifier.fillMaxWidth()
-                .testTag("view-artists-button"),
-            onClick = onViewArtists
-        ) {
-            Text("View Available Artists")
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth()
                 .testTag("view-board-button"),
             onClick = onViewBoardMembers
         ) {
-            Text("View Board Members")
-        }
-        Button(
-            onClick = onViewOrders,
-            modifier = Modifier.fillMaxWidth()
-                .testTag("view-orders-button")
-        ) {
-            Text("View Orders")
-        }
-        Button(
-            onClick = onViewToDos,
-            modifier = Modifier.fillMaxWidth()
-                .testTag("view-todo-button")
-        ) {
-            Text("View To-Dos")
+            Text(stringResource(R.string.dashboard_view_board_members))
         }
         Button(
             onClick = onSignOut,
             modifier = Modifier.fillMaxWidth()
                 .testTag("sign-out-button")
         ) {
-            Text("Sign out")
+            Text(stringResource(R.string.dashboard_sign_out))
         }
 //        Button(
 //            onClick = onLegacyArtists,

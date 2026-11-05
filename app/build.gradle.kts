@@ -11,6 +11,12 @@ room {
     schemaDirectory("${projectDir}/schemas")
 }
 
+composeCompiler {
+    reportsDestination.set(layout.buildDirectory.dir("compose_compiler"))
+    metricsDestination.set(layout.buildDirectory.dir("compose_compiler"))
+    stabilityConfigurationFiles.add(layout.projectDirectory.file("compose_stability.conf"))
+}
+
 android {
     namespace = "com.pnc.miles.jetpackcomposedemos"
     compileSdk {
@@ -33,7 +39,14 @@ android {
         buildConfigField("String", "OIDC_CLIENT_ID", "\"adventureworks-mobile\"")
     }
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     buildTypes {
+        debug {
+            isPseudoLocalesEnabled = true
+        }
         release {
             optimization {
                 enable = false
@@ -105,4 +118,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit.ktx)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.compose.material3.adaptive.navigation.suite)
+    implementation(libs.androidx.compose.material3.adaptive.layout)
+    implementation(libs.androidx.compose.material3.adaptive.navigation)
 }

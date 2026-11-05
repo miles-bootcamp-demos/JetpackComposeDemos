@@ -1,0 +1,8 @@
+package com.pnc.miles.jetpackcomposedemos.core.settings
+
+enum class ThemeMode { SYSTEM, LIGHT, DARK }
+
+data class AppSettings(
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val showArtistLocation: Boolean = true
+)

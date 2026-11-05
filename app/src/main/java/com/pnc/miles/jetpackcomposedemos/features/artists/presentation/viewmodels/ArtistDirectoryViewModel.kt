@@ -1,5 +1,6 @@
 package com.pnc.miles.jetpackcomposedemos.features.artists.presentation.viewmodels
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.Artist
@@ -19,11 +20,15 @@ import kotlin.coroutines.cancellation.CancellationException
 @HiltViewModel
 class ArtistDirectoryViewModel @Inject constructor(
     private val getAvailableArtists: GetAvailableArtistsUseCase,
-    private val refreshArtists: RefreshArtistsUseCase
+    private val refreshArtists: RefreshArtistsUseCase,
+    private val savedStateHandle: SavedStateHandle = SavedStateHandle()
 ): ViewModel() {
     // keep the actual mutable state value private
     private val _uiState = MutableStateFlow(
-        ArtistDirectoryState()
+        ArtistDirectoryState(
+            genreFilter = savedStateHandle[GENRE_KEY] ?: "",
+            locationFilter = savedStateHandle[LOCATION_KEY] ?: ""
+        )
     )
 
     // expose (publicly) a read-only view of the state object
@@ -103,6 +108,7 @@ class ArtistDirectoryViewModel @Inject constructor(
 
         // change the state in a way that can prevent race conditions
         // original value
+        savedStateHandle[GENRE_KEY] = genre
         _uiState.update { currentState ->
             // new value may be different if we are waiting for another update to finish
             currentState.copy(
@@ -112,6 +118,7 @@ class ArtistDirectoryViewModel @Inject constructor(
     }
 
     fun updateLocationFilter(location: String) {
+        savedStateHandle[LOCATION_KEY] = location
         _uiState.update { currentState ->
             currentState.copy(
                 locationFilter = location
@@ -133,5 +140,10 @@ class ArtistDirectoryViewModel @Inject constructor(
                 selectedArtistId = artistId
             )
         }
+    }
+
+    companion object {
+        const val GENRE_KEY = "genreFilter"
+        const val LOCATION_KEY = "locationFilter"
     }
 }
