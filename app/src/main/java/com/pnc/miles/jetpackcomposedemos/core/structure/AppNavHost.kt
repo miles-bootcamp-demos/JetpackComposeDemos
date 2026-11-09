@@ -22,6 +22,7 @@ import com.pnc.miles.jetpackcomposedemos.features.boardmembers.domain.BoardMembe
 import com.pnc.miles.jetpackcomposedemos.features.boardmembers.presentation.BoardMemberDetails
 import com.pnc.miles.jetpackcomposedemos.features.boardmembers.presentation.BoardMemberList
 import com.pnc.miles.jetpackcomposedemos.features.orders.presentation.OrdersScreen
+import com.pnc.miles.jetpackcomposedemos.features.orders.presentation.PagedOrdersScreen
 import com.pnc.miles.jetpackcomposedemos.features.todo.presentation.ToDosScreen
 
 @Composable
@@ -103,7 +104,7 @@ fun AppNavHost(
         }
 
         composable<OrdersRoute> {
-            OrdersScreen(useTwoPaneLayout = useTwoPaneLayout)
+            PagedOrdersScreen(useTwoPaneLayout = useTwoPaneLayout)
         }
 
         composable<ToDosRoute> {

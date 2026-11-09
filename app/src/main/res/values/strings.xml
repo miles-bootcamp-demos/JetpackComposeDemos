@@ -8,6 +8,7 @@
     <string name="common_close">Close</string>
     <string name="common_error">Error: %1$s</string>
     <string name="common_welcome">Welcome, %1$s</string>
+    <string name="common_retry">Retry</string>
 
 
     <!-- Dashboard -->
@@ -53,6 +54,8 @@
     <string name="artist_location">Location: %1$s</string>
     <string name="artist_not_found">Artist not found</string>
     <string name="artist_picture">picture of %1$s</string>
+    <string name="artists_search_hint">Search artists</string>
+    <string name="artists_retry">Retry</string>
 
 
     <!-- To-dos -->
@@ -84,4 +87,11 @@
     <string name="order_col_qty">Qty</string>
     <string name="order_col_unit_price">$/per</string>
     <string name="order_col_total">Total</string>
+    <string name="orders_error_expired">Your session has expired. Please sign in again.</string>
+    <string name="orders_error_forbidden">You are not allowed to see these orders.</string>
+    <string name="orders_error_server">The server returned an error (%1$d).</string>
+    <string name="orders_error_unknown">Unknown error</string>
+    <string name="orders_chart_title">Order totals by month</string>
+    <string name="orders_chart_selected">%1$s: %2$s</string>
+    <string name="orders_chart_summary">Bar chart of order totals for the last %1$d months. Tap a bar to see its total.</string>
 </resources>
