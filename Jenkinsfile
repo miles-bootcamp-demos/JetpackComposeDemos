@@ -24,11 +24,9 @@ pipeline {
 		//		sh 'git log -1 --oneline'
 		//	}
 		//}
-		stages {
-			stage('clean workspace') {
-				steps {
-					cleanWs()
-				}
+		stage('clean workspace') {
+			steps {
+				cleanWs()
 			}
 		}
 		stage('Check tools') {
