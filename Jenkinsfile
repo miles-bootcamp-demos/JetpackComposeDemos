@@ -24,11 +24,11 @@ pipeline {
 		//		sh 'git log -1 --oneline'
 		//	}
 		//}
-		stage('clean workspace') {
-			steps {
-				cleanWs()
-			}
-		}
+		//stage('clean workspace') {
+		//	steps {
+		//		cleanWs()
+		//	}
+		//}
 		stage('Check tools') {
 			steps {
 				sh 'java -version'
