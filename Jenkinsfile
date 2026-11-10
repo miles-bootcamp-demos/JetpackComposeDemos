@@ -41,6 +41,19 @@ pipeline {
 				sh "${GRADLE} --version"
 			}
 		}
+		stage ('Android Lint') {
+			steps {
+				sh "${GRADLE} lintDebug"
+			}
+			post {
+				always {
+					recordIssues enabledForFailure: true,
+						tools: [androidLintParser(
+							pattern: 'app/build/reports/lint-result-debug.xml'
+						)]
+				}
+			}
+		}
 		stage('Unit tests') {
 			steps {
 				catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
@@ -49,7 +62,8 @@ pipeline {
 			}
 			post {
 				always {
-					junit testResults: 'app/build/test-results/testDebugUnitTest/*.xml', allowEmptyResults: false
+					junit testResults: 'app/build/test-results/testDebugUnitTest/*.xml',
+						allowEmptyResults: false
 				}
 			}
 		}
@@ -59,7 +73,8 @@ pipeline {
 			}
 			post {
 				success {
-					archiveArtifacts artifacts: 'app/build/outputs/apk/debug/*.apk', fingerprint: true
+					archiveArtifacts artifacts: 'app/build/outputs/apk/debug/*.apk',
+						fingerprint: true
 				}
 			}
 		}
