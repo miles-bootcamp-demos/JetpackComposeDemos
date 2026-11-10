@@ -13,7 +13,7 @@ pipeline {
 	}
 
 	environment {
-		GRADLE = 'gradlew.bat --console=plain --stacktrace'
+		GRADLE = 'gradlew --console=plain --stacktrace'
 	}
 
 	stages {
