@@ -77,6 +77,20 @@ pipeline {
 				}
 			}
 		}
+		stage('Coverage') {
+			steps {
+				sh "${GRADLE} createDebugUnitTestCoverageReport"
+				sh 'pwsh -NoProfile -ExecutionPolicy Bypass -File ci/coverage-gate.ps1 -Report app/build/reports/coverage/test/debug/report.xml -Min 8'
+			}
+			post {
+				always {
+					recordCoverage(
+						tools: [[parcer: 'JACOCO', pattern: 'app/build/reports/coverage/test/debug/report.xml']],
+						sourceCodeRetention: 'NEVER'
+					)
+				}
+			}
+		}
 		stage('Unit tests') {
 			steps {
 				catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
