@@ -47,8 +47,9 @@ android {
         applicationId = "com.pnc.miles.jetpackcomposedemos"
         minSdk = 26
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        val ciBuild = System.getenv("BUILD_NUMBER")?.toIntOrNull()
+        versionCode = ciBuild ?: 1
+        versionName = "1.0" + (ciBuild ?: 0)
 
         testInstrumentationRunner = "com.pnc.miles.jetpackcomposedemos.HiltTestRunner"
         buildConfigField("String", "BASE_URL", "\"https://kazoopromotions.com/api/\"")
@@ -63,12 +64,26 @@ android {
         generateLocaleConfig = true
     }
 
+    signingConfigs {
+        // Only defined when Jenkins (or you) provide the keystore through environment variables
+        val keystorePath = System.getenv("KEYSTORE_FILE")
+        if (keystorePath != null) {
+            create("release") {
+                storeFile = file(keystorePath)
+                storePassword = System.getenv("KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("KEY_ALIAS")
+                keyPassword = System.getenv("KEY_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         debug {
             isPseudoLocalesEnabled = true
             enableUnitTestCoverage = true
         }
         release {
+            signingConfigs.findByName("release")?.let { signingConfig = it }
             optimization {
                 enable = false
             }
