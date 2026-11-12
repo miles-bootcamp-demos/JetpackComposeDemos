@@ -23,8 +23,8 @@ fun AccountApp() {
         composable<AccountRoute> {
             AccountListScreen(
                 accounts = sampleAccounts,
-                onAccountClick = {
-                    navController.navigate(AccountDetailsRoute)
+                onAccountClick = { accountId ->
+                    navController.navigate(AccountDetailsRoute(id = accountId))
                 }
             )
         }
