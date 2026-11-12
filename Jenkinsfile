@@ -105,6 +105,28 @@ pipeline {
 				}
 			}
 		}
+		stage('Sign release APK') {
+			steps {
+				withCredentials([
+					file(credentialsId: 'android-keystore', variable: 'KEYSTORE_FILE'),
+					string(credentialsId: 'android-store-password', variable:'KEYSTORE_PASSWORD'),
+					usernamePassword(credentialsId: 'android-key', usernameVariable: 'KEY_ALIAS',
+						passwordVariable: 'KEY_PASSWORD')
+				]) {
+					sh "${GRADLE} assembleRelease"
+				}
+				script {
+					env.APK_NAME = "jetpackdemos-${env.BUILD_NUMBER}-${(env.GIT_COMMIT ?: 'local').take(7)}.apk"
+				}
+				sh "copy /Y app/build/outputs/apk/release/app-release.apk ${env.APK_NAME}"
+				sh "/opt/homebrew/bin/pwsh -NoProfile -ExecutionPolicy Bypass -File ci/verify-apk.ps1 -Apk ${env.APK_NAME}"
+			}
+			post {
+				success {
+					archiveArtifacts artifacts: 'jetpackdemos-*.apk', fingerprint: true
+				}
+			}
+		}
 	}
 
 	post {
