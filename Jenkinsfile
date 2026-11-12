@@ -84,7 +84,7 @@ pipeline {
 				}
 				stage('Coverage') {
 					steps {
-						sh 'pwsh -NoProfile -ExecutionPolicy Bypass -File ci/coverage-gate.ps1 -Report app/build/reports/coverage/test/debug/report.xml -Min 8'
+						sh '/opt/homebrew/bin/pwsh -NoProfile -ExecutionPolicy Bypass -File ci/coverage-gate.ps1 -Report app/build/reports/coverage/test/debug/report.xml -Min 8'
 						recordCoverage(
 							tools: [[parcer: 'JACOCO',
 								pattern: 'app/build/reports/coverage/test/debug/report.xml']],
