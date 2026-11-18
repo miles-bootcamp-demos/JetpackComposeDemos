@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.pnc.miles.jetpackcomposedemos.features.authentication.domain.SessionManager
 import com.pnc.miles.jetpackcomposedemos.features.orders.domain.Order
+import timber.log.Timber
 import kotlin.coroutines.cancellation.CancellationException
 
 // Loads the signed-in customer's orders, one server page at a time
@@ -38,6 +39,7 @@ class OrdersPagingSource(
             throw e
         }
         catch (e: Exception) {
+            Timber.w(e, "Loading page %d of orders failed", page)
             LoadResult.Error(e)
         }
     }

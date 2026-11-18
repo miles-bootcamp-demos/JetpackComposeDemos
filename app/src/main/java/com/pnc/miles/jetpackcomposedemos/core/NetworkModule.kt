@@ -1,6 +1,7 @@
 package com.pnc.miles.jetpackcomposedemos.core
 
 import com.pnc.miles.jetpackcomposedemos.BuildConfig
+import com.pnc.miles.jetpackcomposedemos.core.observability.HttpLogging
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.ArtistDataSource
 import com.pnc.miles.jetpackcomposedemos.features.artists.data.RemoteArtistDataSource
 import com.pnc.miles.jetpackcomposedemos.features.orders.data.MyOrdersDataSource
@@ -42,10 +43,11 @@ object NetworkModule {
             .authenticator(tokenAuthenticator)
             .apply {
                 if (BuildConfig.DEBUG) {
-                    addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                        redactHeader("Authorization")
-                    })
+                    addInterceptor(
+                        HttpLogging.interceptor(
+                            level = HttpLoggingInterceptor.Level.BODY
+                        )
+                    )
                 }
             }
             .build()

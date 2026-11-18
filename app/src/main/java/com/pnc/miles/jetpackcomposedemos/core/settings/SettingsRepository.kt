@@ -8,4 +8,6 @@ interface SettingsRepository {
     suspend fun setThemeMode(mode: ThemeMode)
 
     suspend fun setShowArtistLocation(show: Boolean)
+
+    suspend fun setNotifyNewArtists(enabled: Boolean)
 }

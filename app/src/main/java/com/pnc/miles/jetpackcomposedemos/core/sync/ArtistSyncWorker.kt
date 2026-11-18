@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.SyncArtistsUseCase
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import timber.log.Timber
 import java.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -31,9 +32,11 @@ class ArtistSyncWorker @AssistedInject constructor(
         }
         catch (e: IOException) {
             // no network, or the server was unreachable
+            Timber.w(e, "Artist sync could not reach the server; will retry")
             Result.retry()
         }
         catch (e: Exception) {
+            Timber.e(e, "Artist sync failed")
             Result.failure()
         }
     }

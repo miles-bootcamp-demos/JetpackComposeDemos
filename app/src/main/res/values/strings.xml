@@ -20,6 +20,12 @@
     <string name="dashboard_sign_out">Sign out</string>
 
 
+    <!-- Diagnostics (debug builds) -->
+    <string name="settings_diagnostics">Diagnostics</string>
+    <string name="settings_log_test_error">Log a test error</string>
+    <string name="settings_show_report">Show latest report</string>
+
+
     <!-- Notifications -->
     <string name="settings_notifications">Notifications</string>
     <string name="settings_notify_new_artists">Tell me when new artists are available</string>

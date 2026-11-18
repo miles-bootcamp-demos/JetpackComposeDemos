@@ -18,6 +18,12 @@
     <string name="dashboard_sign_out">Cerrar sesión</string>
 
 
+    <!-- Diagnostics (debug builds) -->
+    <string name="settings_diagnostics">Diagnóstico</string>
+    <string name="settings_log_test_error">Registrar un error de prueba</string>
+    <string name="settings_show_report">Mostrar el último informe</string>
+
+
     <!-- Notifications -->
     <string name="settings_notifications">Notificaciones</string>
     <string name="settings_notify_new_artists">Avisarme cuando haya artistas nuevos</string>

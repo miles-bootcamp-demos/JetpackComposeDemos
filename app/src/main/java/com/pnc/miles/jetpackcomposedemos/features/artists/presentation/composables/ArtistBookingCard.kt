@@ -13,10 +13,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.pnc.miles.jetpackcomposedemos.features.artists.domain.Artist
+import timber.log.Timber
 
 @Composable
 fun ArtistBookingCard(artist: Artist) {
-    Log.d("ComposeDemo", "ArtistBookingCard: composing")
+    Timber.d("ArtistBookingCard: composing")
 
     // longer syntax, works with the mutableState wrapper around our value
 //    val selectedState = remember {

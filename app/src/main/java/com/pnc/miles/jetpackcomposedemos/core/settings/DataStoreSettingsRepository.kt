@@ -17,15 +17,7 @@ class DataStoreSettingsRepository @Inject constructor(
     private object Keys {
         val THEME_MODE = stringPreferencesKey("theme_mode")
         val SHOW_ARTIST_LOCATION = booleanPreferencesKey("show_artist_location")
-    }
-
-    override val settings: Flow<AppSettings> = dataStore.data.map { prefs ->
-        AppSettings(
-            themeMode = prefs[Keys.THEME_MODE]
-                ?.let { name -> ThemeMode.entries.firstOrNull { it.name == name } }
-                ?: ThemeMode.SYSTEM,
-            showArtistLocation = prefs[Keys.SHOW_ARTIST_LOCATION] ?: true
-        )
+        val NOTIFY_NEW_ARTISTS = booleanPreferencesKey("notify_new_artists")
     }
 
     override suspend fun setThemeMode(mode: ThemeMode) {
@@ -34,5 +26,19 @@ class DataStoreSettingsRepository @Inject constructor(
 
     override suspend fun setShowArtistLocation(show: Boolean) {
         dataStore.edit { it[Keys.SHOW_ARTIST_LOCATION] = show }
+    }
+
+    override suspend fun setNotifyNewArtists(enabled: Boolean) {
+        dataStore.edit { it[Keys.NOTIFY_NEW_ARTISTS] = enabled }
+    }
+
+    override val settings: Flow<AppSettings> = dataStore.data.map { prefs ->
+        AppSettings(
+            themeMode = prefs[Keys.THEME_MODE]
+                ?.let { name -> ThemeMode.entries.firstOrNull { it.name == name } }
+                ?: ThemeMode.SYSTEM,
+            showArtistLocation = prefs[Keys.SHOW_ARTIST_LOCATION] ?: true,
+            notifyNewArtists = prefs[Keys.NOTIFY_NEW_ARTISTS] ?: false
+        )
     }
 }
